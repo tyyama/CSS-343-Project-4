@@ -3,16 +3,16 @@
 //Program 4 Design
 
 #include <iostream>
-#include "transaction.h"
-#include "movie.h"
-#include "customer.h"
+
 using namespace std;
 
 class Return: public Transaction{
 	public:
-	Return(int customerId, Movie movie) : Transaction('R',customerId,movie){}
+		Return(Movie movie) : Transaction('R',movie){}
 	
 	
 	private:
 	
 };
+
+#include "return.cpp"

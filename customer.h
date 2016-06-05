@@ -3,29 +3,23 @@
 //Program 4 Design
 
 #include <iostream>
-#include "command.h"
+#include "transaction.h"
 using namespace std;
 
 class Customer{
 	public:
-	Customer(string first, string last, int id);
+		Customer(string first, string last, int id);
     
-    vector<CommandNode> customerTransactions; // should this be a vector or something else like a linked list?
+		vector<Transaction> customerTransactions; 
 	
-    int getCustomerID();
+		int customerID();
 	
 	private:
-	
-	struct TransactionNode{//Nodes of a transaction linked list
-		Transaction  command;//the transaction
-		TransactionNode *next=NULL;//the next transaction
-	};
-    
-    
-	string first;
-	string last;
-	int id;
-	TransactionNode *head=NULL;//customer's first transaction in the list
-	
+		string first;
+		string last;
+		int id;
 	
 };
+
+#include "customer.cpp"
+

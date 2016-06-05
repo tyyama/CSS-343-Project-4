@@ -3,17 +3,17 @@
 //Program 4 Design
 
 #include <iostream>
-#include "transaction.h"
-#include "movie.h"
-#include "customer.h"
+
 using namespace std;
 
 class Borrow: public Transaction{
 	public:
-	Borrow(int customerId, Movie movie) : Transaction('B',customerId,movie){}
+		Borrow(Movie movie) : Transaction('B',movie){}
 	
 	
 	
 	private:
 	
 };
+
+#include "borrow.cpp"

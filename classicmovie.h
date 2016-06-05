@@ -7,16 +7,18 @@ using namespace std;
 
 class ClassicMovie: public Movie{
 	public:
-	ClassicMovie(int stock, int year, string title, string director, int month, string actor);
+		ClassicMovie(int stock, int year, string title, string director, int month, string actor);
     
-    string getMajorActor();
-    int getMonthReleased();
+		string getMajorActor();
+		int getMonthReleased();
 	
 	
 	private:
-	int monthRelease;
-    string majorActor;
+		int monthRelease;
+		string majorActor;
 	
 	
 	
 };
+
+#include "classicmovie.cpp"

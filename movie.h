@@ -3,37 +3,36 @@
 //Program 4 Design
 
 #include <iostream>
+#include <string>
+#include <vector>
+#include <ifstream>
 using namespace std;
 
 class Movie{
 	public:
 	
 	
-	bool operator==(const Movie &) const;
-	bool operator!=(const Movie &) const;	
+		bool operator==(const Movie &) const;
+		bool operator!=(const Movie &) const;	
 	
-    int getCurrentStock();
-    int getYearReleased();
+		int getCurrentStock();
+		int getYearReleased();
     
-    string getTitle();
-    string getDirector();
-    
-    int checkoutMovie(Customer customer); // my thinking is that we should create the borrow / return transactions inside these
-    int returnMovie(Customer customer);  // we need to handle the case where this gets called when the customer has not checked out the movie
-                                // maybe have each customer keep a list of currently-checked-out movies?
+		string getTitle();
+		string getDirector();
     
 	private:
 	
 	protected :
-	Movie(int stock, int year, string title, string director);
+		Movie(int stock, int year, string title, string director);
 	
-	bool returned;//?? Sawyer: I don't think we need this, since we will have multiple stocks of this movie represented as one Movie object
-	int stock;
-	int yearRelease;
-	string title;
-	string director;
-	
-	
-	
-	
+		int stock;
+		int yearRelease;
+		string title;
+		string director;
 };
+
+#include "movie.cpp"
+#include "classicmovie.h"
+#include "comedymovie.h"
+#include "dramamovie.h"

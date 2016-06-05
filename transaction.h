@@ -3,6 +3,8 @@
 //Program 4 Design
 
 #include <iostream>
+#include "movie.h"
+
 using namespace std;
 
 class Transaction{
@@ -11,14 +13,15 @@ class Transaction{
     
 	
 	private:
-    
-    char transactionType;
-    Customer customer;
-    Movie movie;
+		char transactionType;
+		Movie movie;
 	
 	protected:
-	
-	Transaction(char transactionType, Customer customer, Movie movie);
+		Transaction(char transactionType, Movie movie);
 	
 	
 };
+
+#include "transaction.cpp"
+#include "return.h"
+#include "borrow.h"

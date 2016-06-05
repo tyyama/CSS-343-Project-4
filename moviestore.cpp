@@ -1,3 +1,3 @@
-void MovieStore::hashMovies(ifstream& file){
+void MovieStore::readMovies(ifstream& file){
 	
 }

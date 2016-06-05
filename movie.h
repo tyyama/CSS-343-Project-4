@@ -5,13 +5,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <ifstream>
+#include <fstream>
 using namespace std;
 
 class Movie{
 	public:
-	
-	
 		bool operator==(const Movie &) const;
 		bool operator!=(const Movie &) const;	
 	

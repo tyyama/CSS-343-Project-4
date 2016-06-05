@@ -10,9 +10,9 @@ const int defaultSize=101;
 class MovieStore{
 	public:
 		//methods that read the text files 
-		void readMovies(istream &input);
-		void readCustomers(istream &input);
-		void readCommands(istream &input);
+		void readMovies(ifstream &input);
+		void readCustomers(ifstream &input);
+		void readCommands(ifstream &input);
 	
 	
 		//methods that add objects based on the text files

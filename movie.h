@@ -1,6 +1,6 @@
-//Design Group 7:Billy Agung, Sawyer Knoblich, Elias Muche, Tyler Yamamoto
-//5-18-16
-//Program 4 Design
+//Implementation Group:Billy Agung Tjahjady and Tyler Yamamoto
+//6-8-16
+//Program 4 Implementation
 
 #include <iostream>
 #include <string>
@@ -11,7 +11,7 @@ using namespace std;
 class Movie{
 	public:
 	
-		static Movie *store_movie(int movieType); //Factory Method
+		static Movie *store_movie(string movieType); //Factory Method
 	
 		bool operator==(const Movie &) const;
 		bool operator!=(const Movie &) const;	

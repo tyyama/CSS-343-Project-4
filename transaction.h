@@ -1,6 +1,6 @@
-//Design Group 7:Billy Agung, Sawyer Knoblich, Elias Muche, Tyler Yamamoto
-//5-18-16
-//Program 4 Design
+//Implementation Group:Billy Agung Tjahjady and Tyler Yamamoto
+//6-8-16
+//Program 4 Implementation
 
 #include <iostream>
 #include "movie.h"
@@ -10,7 +10,7 @@ using namespace std;
 class Transaction{
 	public:
     
-    
+    static Transaction *read_commands(string transType); //Factory Method
 	
 	private:
 		char transactionType;

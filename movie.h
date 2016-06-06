@@ -11,6 +11,7 @@ using namespace std;
 class Movie{
 	public:
 	
+		static Movie *store_movie(int movieType); //Factory Method
 	
 		bool operator==(const Movie &) const;
 		bool operator!=(const Movie &) const;	

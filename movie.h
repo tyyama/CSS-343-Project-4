@@ -10,6 +10,12 @@ using namespace std;
 
 class Movie{
 	public:
+<<<<<<< HEAD
+=======
+	
+		static Movie *store_movie(int movieType); //Factory Method
+	
+>>>>>>> origin/master
 		bool operator==(const Movie &) const;
 		bool operator!=(const Movie &) const;	
 	

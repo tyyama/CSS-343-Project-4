@@ -41,6 +41,8 @@ class MovieStore{
 		int hashCustomer(Customer customer);
 		CustomerNode *customerTable[defaultSize];//table of customers
 		MovieNode *movieTable[defaultSize];//table of movies 
+		
+		static int stringToInt(string);
 	
 	
 	

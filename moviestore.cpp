@@ -1,3 +1,20 @@
+MovieStore::MovieStore(){
+	for(int i=0;i<defaultSize;i++){
+		movieTable[i]=NULL;
+		customerTable[i]=NULL;
+	}
+}
+
+MovieStore::~MovieStore(){
+	while(!destMovies.empty()){
+		delete destMovies.top();
+		destMovies.pop();
+	}
+	for(int i=0;i<defaultSize;i++){
+		delete movieTable[i];
+	}
+}
+
 void MovieStore::readMovies(ifstream& file){
 	char movieCode;
 	int inventory;
@@ -6,10 +23,13 @@ void MovieStore::readMovies(ifstream& file){
 	int releaseYear;
 	int releaseMonth;
 	
+	int movieHash;
+	
 	string primaryActor;
 	
 	string line;
 	while(!file.eof()){
+		cerr<<"woop"<<endl;
 		
 		string primaryActor = "";
 		
@@ -30,12 +50,19 @@ void MovieStore::readMovies(ifstream& file){
 			case 'F':
 				movieCode = 'F';
 				break;
+			case 0:
+				break;
 			default :
 				movieCode = 'I';
-				cout<<"Invalid code"<<endl;
+				cerr<<"Invalid code, token was ASCII value "<< token[0]<<endl;
 		}
 		
-		cout<<"Movie Code: "<<movieCode<<endl;
+		if(token[0]==0){
+			cerr<<"hey"<<endl;
+			break;
+		}
+		
+		cerr<<"Movie Code: "<<movieCode<<endl;
 		
 		switch(movieCode){
 			case 'I':
@@ -43,15 +70,15 @@ void MovieStore::readMovies(ifstream& file){
 			default :
 				getline(ss,token,',');
 				inventory = stringToInt(token.substr(1,token.length()));
-				cout<<"Inventory: "<<inventory<<endl;
+				cerr<<"Inventory: "<<inventory<<endl;
 		
 				getline(ss,director,',');
 				director = director.substr(1,director.length());
-				cout<<"Director: "<<director<<endl;
+				cerr<<"Director: "<<director<<endl;
 		
 				getline(ss,title,',');
 				title = title.substr(1,title.length());
-				cout<<"Title: "<<title<<endl;
+				cerr<<"Title: "<<title<<endl;
 		}
 		
 		
@@ -62,34 +89,58 @@ void MovieStore::readMovies(ifstream& file){
 			{
 				getline(ss,token,',');
 				istringstream sss(token);
-				cout<<"Token: "<<token<<endl;
+				cerr<<"Token: "<<token<<endl;
 				
 				getline(sss,subtoken,' ');
 				getline(sss,subtoken,' ');
 				primaryActor = primaryActor + subtoken;
-				cout<<"Subtoken 1: "<<subtoken<<endl;
+				cerr<<"Subtoken 1: "<<subtoken<<endl;
 				getline(sss,subtoken,' ');
 				primaryActor = primaryActor + " " + subtoken;
-				cout<<"Subtoken 2: "<<subtoken<<endl;
-				cout<<"Primary Actor: "<<primaryActor<<endl;
+				cerr<<"Subtoken 2: "<<subtoken<<endl;
+				cerr<<"Primary Actor: "<<primaryActor<<endl;
 				
 				getline(sss,subtoken,' ');
 				releaseMonth = stringToInt(subtoken);
-				cout<<"Release Month: "<<releaseMonth<<endl;
+				cerr<<"Release Month: "<<releaseMonth<<endl;
 				
 				getline(sss,subtoken,' ');
 				releaseYear = stringToInt(subtoken);
-				cout<<"Release Year: "<<releaseYear<<endl;
+				cerr<<"Release Year: "<<releaseYear<<endl;
 				
 				break;
 			}
 			default :
 				getline(ss,token,',');
 				releaseYear = stringToInt(token.substr(1,token.length()));
-				cout<<"Release Year: "<<releaseYear<<endl;
+				cerr<<"Release Year: "<<releaseYear<<endl;
+				
+				movieHash = hashMovie(movieCode,releaseYear);
+				
+				if(movieTable[movieHash] == NULL){
+					movieTable[movieHash] = new MovieNode;
+					movieTable[movieHash]->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
+					destMovies.push(movieTable[movieHash]->movie);
+				}else{
+					MovieNode* newMovie = new MovieNode; 
+					newMovie->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
+					newMovie->next = movieTable[movieHash];
+					movieTable[movieHash] = newMovie;
+					destMovies.push(movieTable[movieHash]->movie);
+				}
 		}
-		cout<<endl<<endl;
+		cerr<<endl<<endl;
 	}
+	cerr<<"hey"<<endl;
+	cerr<<"hey"<<endl;
+}
+
+int MovieStore::hashMovie(char movieCode, int releaseYear){
+	return (releaseYear % 10) + (int)movieCode;
+}
+
+int MovieStore::hashCustomer(char firstNameChar, int customerID){
+	return (customerID % 10) + (int)firstNameChar;
 }
 
 int MovieStore::stringToInt(string input){

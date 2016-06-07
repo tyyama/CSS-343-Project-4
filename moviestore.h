@@ -1,14 +1,18 @@
-//Implementation Group:Billy Agung Tjahjady and Tyler Yamamoto
-//6-8-16
-//Program 4 Implementation
+//Design Group 7:Billy Agung, Sawyer Knoblich, Elias Muche, Tyler Yamamoto
+//5-18-16
+//Program 4 Design
 
 #include <iostream>
 #include "customer.h"
 using namespace std;
-const int defaultSize=101;
+const int defaultSize=79;
 
 class MovieStore{
 	public:
+		
+		MovieStore();
+		~MovieStore();
+		
 		//methods that read the text files 
 		void readMovies(ifstream &input);
 		void readCustomers(ifstream &input);
@@ -26,22 +30,24 @@ class MovieStore{
 		void printHistory(Customer customer);
 		
 	private:
+		stack<Movie*> destMovies;
+		
 		struct CustomerNode{//to handle collisions, the customer table will store a linked list in each element 
-			Customer cust;//customer 
+			Customer *cust;//customer 
 			CustomerNode *next=NULL;//next customer if a collision occurs
 		
 		};
 	
-		struct MovieNode{//to handle collisions, the movie table will store a linked list in each element 
-			Movie movie;//movie 
+		struct MovieNode{//to handle collisions, the movie table will store a linked list in each element
+			Movie *movie;//movie 
 			MovieNode *next=NULL;//next movie if a collision occurs 		
 		};
-	
-		int hashMovie(Movie movie);
-		int hashCustomer(Customer customer);
-		CustomerNode *customerTable[defaultSize];//table of customers
-		MovieNode *movieTable[defaultSize];//table of movies 
 		
+		CustomerNode *customerTable[defaultSize];//table of customers
+		MovieNode *movieTable[defaultSize];//table of movies
+		
+		static int hashMovie(char,int);
+		static int hashCustomer(char,int);
 		static int stringToInt(string);
 	
 	

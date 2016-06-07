@@ -1,11 +1,14 @@
-Movie::Movie(int stock, int year, string title, string director) : stock(stock), yearRelease(year), title(title), director(director){}
-	
+Movie::Movie(int stock, string director, string title, int year) : stock(stock), director(director), title(title), yearRelease(year){}
 
-//Factory Method
-Movie *Movie::store_movie(char movieType){
-  if (movieType == 'F') return new ComedyMovie;
-  if (movieType == 'D') return new DramaMovie;
-  if (movieType == 'C') return new ClassicMovie;
+Movie *Movie::store_movie(char movieType, int stock, string director, string title, int year){
+  if (movieType == 'F') return new ComedyMovie(stock, director, title, year);
+  if (movieType == 'D') return new DramaMovie(stock, director, title, year);
+	else return NULL;
+
+}
+
+Movie *Movie::store_movie(char movieType, int stock, string director, string title, int year, int month, string actor){
+  if (movieType == 'C') return new ClassicMovie(stock, director, title, year, month, actor);
 	else return NULL;
 
 }

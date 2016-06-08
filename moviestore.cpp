@@ -30,11 +30,13 @@ void MovieStore::readMovies(ifstream& file){
 	string line;
 	while(!file.eof()){
 		cerr<<"woop"<<endl;
+		//if(file.eof()) break;
 		
 		string primaryActor = "";
 		
 		getline(file,line);
 		istringstream ss(line);
+		cout<<line<<endl;
 		
 		string token;
 		string subtoken;
@@ -50,11 +52,13 @@ void MovieStore::readMovies(ifstream& file){
 			case 'F':
 				movieCode = 'F';
 				break;
-			case 0:
+			case '\0':
+				cout<<"asdasdasdasdasdasd"<<endl;
+				movieCode = 'I';
 				break;
 			default :
 				movieCode = 'I';
-				cerr<<"Invalid code, token was ASCII value "<< token[0]<<endl;
+				cerr<<"Invalid code, token was ASCII value "<< (int)token[0] <<" token was: "<<token<<endl;
 		}
 		
 		if(token[0]==0){
@@ -116,31 +120,33 @@ void MovieStore::readMovies(ifstream& file){
 				cerr<<"Release Year: "<<releaseYear<<endl;
 				
 				movieHash = hashMovie(movieCode,releaseYear);
+				cerr<<movieHash<<endl;
 				
 				if(movieTable[movieHash] == NULL){
 					movieTable[movieHash] = new MovieNode;
 					movieTable[movieHash]->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
 					destMovies.push(movieTable[movieHash]->movie);
+					cerr<<"adding as front"<<endl;
 				}else{
 					MovieNode* newMovie = new MovieNode; 
 					newMovie->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
 					newMovie->next = movieTable[movieHash];
+					cerr<<"adding in front"<<endl;
 					movieTable[movieHash] = newMovie;
 					destMovies.push(movieTable[movieHash]->movie);
 				}
 		}
 		cerr<<endl<<endl;
+		
 	}
-	cerr<<"hey"<<endl;
-	cerr<<"hey"<<endl;
 }
 
 int MovieStore::hashMovie(char movieCode, int releaseYear){
-	return (releaseYear % 10) + (int)movieCode;
+	return (releaseYear % 10) + (int)movieCode - 1;
 }
 
 int MovieStore::hashCustomer(char firstNameChar, int customerID){
-	return (customerID % 10) + (int)firstNameChar;
+	return (customerID % 10) + (int)firstNameChar - 1;
 }
 
 int MovieStore::stringToInt(string input){

@@ -1,6 +1,6 @@
-//Design Group 7:Billy Agung, Sawyer Knoblich, Elias Muche, Tyler Yamamoto
-//5-18-16
-//Program 4 Design
+//Implementation Group:Billy Agung Tjahjady and Tyler Yamamoto
+//6-8-16
+//Program 4 Implementation
 
 #include <iostream>
 #include "customer.h"
@@ -14,20 +14,20 @@ class MovieStore{
 		~MovieStore();
 		
 		//methods that read the text files 
-		void readMovies(ifstream &input);
-		void readCustomers(ifstream &input);
-		void readCommands(ifstream &input);
+		void readMovies(ifstream &input);					//read movies from data4movies.txt
+		// void readCustomers(ifstream &input);
+		// void readCommands(ifstream &input);
 	
 	
 		//methods that add objects based on the text files
-		void addMovie(Movie movie);
-		void addCustomer(Customer customer);
+		// void addMovie(Movie movie);
+		// void addCustomer(Customer customer);
     
-		void checkOutMovie(Customer customer); // duplicate of the ones in movie.h, we should decide where these should go
-		void returnMovie(Customer customer);
+		// void checkOutMovie(Customer customer);
+		// void returnMovie(Customer customer);
 		
-		void printInventory();
-		void printHistory(Customer customer);
+		// void printInventory();
+		// void printHistory(Customer customer);
 		
 	private:
 		stack<Movie*> destMovies;
@@ -43,12 +43,12 @@ class MovieStore{
 			MovieNode *next=NULL;//next movie if a collision occurs 		
 		};
 		
-		CustomerNode *customerTable[defaultSize];//table of customers
-		MovieNode *movieTable[defaultSize];//table of movies
+		CustomerNode *customerTable[defaultSize];	//table of customers
+		MovieNode *movieTable[defaultSize];				//table of movies
 		
-		static int hashMovie(char,int);
-		static int hashCustomer(char,int);
-		static int stringToInt(string);
+		static int hashMovie(char,int);			//hash Movie to movieTable
+		static int hashCustomer(char,int);	//hash Customer to customerTable
+		static int stringToInt(string);			
 	
 	
 	

@@ -1,3 +1,4 @@
+//Default Constructor
 MovieStore::MovieStore(){
 	for(int i=0;i<defaultSize;i++){
 		movieTable[i]=NULL;
@@ -5,6 +6,7 @@ MovieStore::MovieStore(){
 	}
 }
 
+//Destructor
 MovieStore::~MovieStore(){
 	while(!destMovies.empty()){
 		delete destMovies.top();
@@ -15,6 +17,7 @@ MovieStore::~MovieStore(){
 	}
 }
 
+//read movies from data4movies.txt
 void MovieStore::readMovies(ifstream& file){
 	char movieCode;
 	int inventory;
@@ -87,9 +90,9 @@ void MovieStore::readMovies(ifstream& file){
 		
 		
 		switch(movieCode){
-			case 'I':
+			case 'I':					//what is 'I'?
 				break;
-			case 'C':
+			case 'C':					//is this for Classic movies? if yes, need to put in a hashing function (like you did in the default case)
 			{
 				getline(ss,token,',');
 				istringstream sss(token);
@@ -122,12 +125,12 @@ void MovieStore::readMovies(ifstream& file){
 				movieHash = hashMovie(movieCode,releaseYear);
 				cerr<<movieHash<<endl;
 				
-				if(movieTable[movieHash] == NULL){
+				if(movieTable[movieHash] == NULL){ // add movie as front if front==NULL
 					movieTable[movieHash] = new MovieNode;
 					movieTable[movieHash]->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
 					destMovies.push(movieTable[movieHash]->movie);
 					cerr<<"adding as front"<<endl;
-				}else{
+				}else{														 // otherwise, set new movie as new front and link it to the old front
 					MovieNode* newMovie = new MovieNode; 
 					newMovie->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
 					newMovie->next = movieTable[movieHash];
@@ -141,24 +144,27 @@ void MovieStore::readMovies(ifstream& file){
 	}
 }
 
+//hashing function for movies based on movieCode and releaseYear
 int MovieStore::hashMovie(char movieCode, int releaseYear){
 	return (releaseYear % 10) + (int)movieCode - 1;
 }
 
+//hashing function for customers based on firstNameChar and customerID
 int MovieStore::hashCustomer(char firstNameChar, int customerID){
 	return (customerID % 10) + (int)firstNameChar - 1;
 }
 
+//converts type string to type int
 int MovieStore::stringToInt(string input){
-	int ret = 0;																						//Return value
+	int ret = 0;															//Return value
 	int size = input.size();
-	int asciiVal = input[input.size()-1];																//Initialize to last character to check for new line
-	if(asciiVal == 13) size--;																			//Compensate for new line character
+	int asciiVal = input[input.size()-1];			//Initialize to last character to check for new line
+	if(asciiVal == 13) size--;								//Compensate for new line character
 
 	for(int i=0;i<size;i++){
-		asciiVal = input[size-i-1];																		//Update value
+		asciiVal = input[size-i-1];							//Update value
 		if(asciiVal>47 && asciiVal<58){
-			ret+=((asciiVal-48)*pow(10,i));																//Multiply ASCII value by 10 to the decimal place
+			ret+=((asciiVal-48)*pow(10,i));				//Multiply ASCII value by 10 to the decimal place
 		}
 	}
 	return ret;

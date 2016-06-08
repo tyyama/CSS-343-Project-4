@@ -1,6 +1,6 @@
-//Design Group 7:Billy Agung, Sawyer Knoblich, Elias Muche, Tyler Yamamoto
-//5-18-16
-//Program 4 Design
+//Implementation Group:Billy Agung Tjahjady and Tyler Yamamoto
+//6-8-16
+//Program 4 Implementation
 
 #include <iostream>
 #include <sstream>
@@ -19,7 +19,7 @@ class Movie{
 		bool operator!=(const Movie &) const;	
 		
 		static Movie *store_movie(char, int, string, string, int);
-		static Movie *store_movie(char, int, string, string, int, int, string);
+		static Movie *store_movie(char, int, string, string, int, int, string); // forgot to use it in MovieStore::readMovies(ifstream&)?
 		
 		int getCurrentStock();
 		int getYearReleased();

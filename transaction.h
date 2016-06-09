@@ -11,6 +11,7 @@ class Transaction{
 	public:
     
     static Transaction *read_commands(string transType); //Factory Method
+		char getTransactionType();
 	
 	private:
 		char transactionType;

@@ -19,7 +19,7 @@ class Movie{
 		bool operator!=(const Movie &) const;	
 		
 		static Movie *store_movie(char, int, string, string, int);
-		static Movie *store_movie(char, int, string, string, int, int, string); // forgot to use it in MovieStore::readMovies(ifstream&)?
+		
 		
 		int getCurrentStock();
 		int getYearReleased();

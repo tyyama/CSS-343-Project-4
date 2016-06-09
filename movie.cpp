@@ -7,10 +7,8 @@ Movie *Movie::store_movie(char movieType, int stock, string director, string tit
 
 }
 
-Movie *Movie::store_movie(char movieType, int stock, string director, string title, int year, int month, string actor){
-  if (movieType == 'C') return new ClassicMovie(stock, director, title, year, month, actor);
-	else return NULL;
-
+string Movie::getTitle(){
+	return title;
 }
 
 bool Movie::sameType(const Movie& other) const{

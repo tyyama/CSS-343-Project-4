@@ -1,23 +1,32 @@
-//Default Constructor
 MovieStore::MovieStore(){
 	for(int i=0;i<defaultSize;i++){
+		cMovieTable[i]=NULL;
 		movieTable[i]=NULL;
 		customerTable[i]=NULL;
 	}
 }
 
-//Destructor
 MovieStore::~MovieStore(){
+	
 	while(!destMovies.empty()){
 		delete destMovies.top();
 		destMovies.pop();
 	}
+	while(!destCMovies.empty()){
+		delete destCMovies.top();
+		destCMovies.pop();
+	}
+	while(!destCustomers.empty()){
+		delete destCustomers.top();
+		destCustomers.pop();
+	}
 	for(int i=0;i<defaultSize;i++){
+		delete customerTable[i];
 		delete movieTable[i];
+		delete cMovieTable[i];
 	}
 }
 
-//read movies from data4movies.txt
 void MovieStore::readMovies(ifstream& file){
 	char movieCode;
 	int inventory;
@@ -33,7 +42,6 @@ void MovieStore::readMovies(ifstream& file){
 	string line;
 	while(!file.eof()){
 		cerr<<"woop"<<endl;
-		//if(file.eof()) break;
 		
 		string primaryActor = "";
 		
@@ -90,9 +98,9 @@ void MovieStore::readMovies(ifstream& file){
 		
 		
 		switch(movieCode){
-			case 'I':					//what is 'I'?
+			case 'I':
 				break;
-			case 'C':					//is this for Classic movies? if yes, need to put in a hashing function (like you did in the default case)
+			case 'C':
 			{
 				getline(ss,token,',');
 				istringstream sss(token);
@@ -115,6 +123,25 @@ void MovieStore::readMovies(ifstream& file){
 				releaseYear = stringToInt(subtoken);
 				cerr<<"Release Year: "<<releaseYear<<endl;
 				
+				movieHash = hashMovie(movieCode,releaseYear,releaseMonth);
+				cerr<<movieHash<<endl;
+				
+				if(cMovieTable[movieHash] == NULL){
+					cMovieTable[movieHash] = new cMovieNode;
+					cMovieTable[movieHash]->movie = ClassicMovie::store_movie(movieCode,inventory,director,title,releaseYear,releaseMonth,primaryActor);
+					destCMovies.push(cMovieTable[movieHash]->movie);
+					inv.push(cMovieTable[movieHash]->movie,movieCode);
+					cerr<<"adding as front"<<endl;
+				}else{
+					cMovieNode* newMovie = new cMovieNode; 
+					newMovie->movie = ClassicMovie::store_movie(movieCode,inventory,director,title,releaseYear,releaseMonth,primaryActor);
+					newMovie->next = cMovieTable[movieHash];
+					cerr<<"adding in front"<<endl;
+					cMovieTable[movieHash] = newMovie;
+					destCMovies.push(cMovieTable[movieHash]->movie);
+					inv.push(cMovieTable[movieHash]->movie,movieCode);
+				}
+				
 				break;
 			}
 			default :
@@ -125,46 +152,94 @@ void MovieStore::readMovies(ifstream& file){
 				movieHash = hashMovie(movieCode,releaseYear);
 				cerr<<movieHash<<endl;
 				
-				if(movieTable[movieHash] == NULL){ // add movie as front if front==NULL
+				if(movieTable[movieHash] == NULL){
 					movieTable[movieHash] = new MovieNode;
 					movieTable[movieHash]->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
 					destMovies.push(movieTable[movieHash]->movie);
+					inv.push(movieTable[movieHash]->movie,movieCode);
 					cerr<<"adding as front"<<endl;
-				}else{														 // otherwise, set new movie as new front and link it to the old front
+				}else{
 					MovieNode* newMovie = new MovieNode; 
 					newMovie->movie = Movie::store_movie(movieCode,inventory,director,title,releaseYear);
 					newMovie->next = movieTable[movieHash];
 					cerr<<"adding in front"<<endl;
 					movieTable[movieHash] = newMovie;
 					destMovies.push(movieTable[movieHash]->movie);
+					inv.push(movieTable[movieHash]->movie,movieCode);
 				}
 		}
 		cerr<<endl<<endl;
 		
 	}
+	inv.display();
 }
 
-//hashing function for movies based on movieCode and releaseYear
+void MovieStore::readCustomers(ifstream& file){
+	int customerID;
+	
+	
+	string line;
+	while(!file.eof()){
+		string customerName;
+		string token;
+		getline(file,line);
+		istringstream ss(line);
+		
+		getline(ss,token,' ');
+		customerID = stringToInt(token);
+		if(token[0]=='\0') break;
+		
+		getline(ss,token,' ');
+		customerName = customerName + token;
+		
+		getline(ss,token,' ');
+		customerName = customerName + " " + token;
+		
+		int customerHash = hashCustomer(customerID);
+		cerr<<customerHash<<endl;
+		
+		if(customerTable[customerHash] == NULL){
+			customerTable[customerHash] = new CustomerNode;
+			customerTable[customerHash]->cust = new Customer(customerName,customerID);
+			destCustomers.push(customerTable[customerHash]->cust);
+			cerr<<"adding as front"<<endl;
+		}else{
+			CustomerNode* newCustomer = new CustomerNode; 
+			newCustomer->cust = new Customer(customerName,customerID);
+			newCustomer->next = customerTable[customerHash];
+			cerr<<"adding in front"<<endl;
+			customerTable[customerHash] = newCustomer;
+			destCustomers.push(customerTable[customerHash]->cust);
+		}
+	}
+}
+
+void MovieStore::readCommands(ifstream& file){
+	
+}
+
 int MovieStore::hashMovie(char movieCode, int releaseYear){
 	return (releaseYear % 10) + (int)movieCode - 1;
 }
 
-//hashing function for customers based on firstNameChar and customerID
-int MovieStore::hashCustomer(char firstNameChar, int customerID){
-	return (customerID % 10) + (int)firstNameChar - 1;
+int MovieStore::hashMovie(char movieCode, int releaseYear, int releaseMonth){
+	return (releaseYear % 10) + (int)movieCode - releaseMonth;
 }
 
-//converts type string to type int
+int MovieStore::hashCustomer(int customerID){
+	return (customerID % 10) + (customerID/pow(10,floor(log10(customerID)))) - 1;
+}
+
 int MovieStore::stringToInt(string input){
-	int ret = 0;															//Return value
+	int ret = 0;																						//Return value
 	int size = input.size();
-	int asciiVal = input[input.size()-1];			//Initialize to last character to check for new line
-	if(asciiVal == 13) size--;								//Compensate for new line character
+	int asciiVal = input[input.size()-1];																//Initialize to last character to check for new line
+	if(asciiVal == 13) size--;																			//Compensate for new line character
 
 	for(int i=0;i<size;i++){
-		asciiVal = input[size-i-1];							//Update value
+		asciiVal = input[size-i-1];																		//Update value
 		if(asciiVal>47 && asciiVal<58){
-			ret+=((asciiVal-48)*pow(10,i));				//Multiply ASCII value by 10 to the decimal place
+			ret+=((asciiVal-48)*pow(10,i));																//Multiply ASCII value by 10 to the decimal place
 		}
 	}
 	return ret;

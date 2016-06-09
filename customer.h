@@ -8,15 +8,14 @@ using namespace std;
 
 class Customer{
 	public:
-		Customer(string first, string last, int id);
+		Customer(string, int);
     
 		vector<Transaction> customerTransactions; 
 	
 		int customerID();
 	
 	private:
-		string first;
-		string last;
+		string name;
 		int id;
 	
 };

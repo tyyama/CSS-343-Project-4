@@ -8,7 +8,7 @@ using namespace std;
 class DramaMovie: public Movie{
 public:
     DramaMovie(int stock, string director, string title, int year) : Movie(stock, director, title, year){}
-    
+    bool operator<(const DramaMovie &) const;
     
 private:
     

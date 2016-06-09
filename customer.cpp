@@ -1,0 +1,1 @@
+Customer::Customer(string name, int id) : name(name), id(id){}

@@ -218,6 +218,22 @@ void MovieStore::readCommands(ifstream& file){
 	
 }
 
+//should show a list of DVD transactions of a customer in chronological order 
+//(latest to earliest) and specify whether the movie was borrowed or returned.
+void MovieStore::printHistory(Customer customer){
+	cout << customer.name << "'s transaction history:" << endl;
+	for(int i = 0; i<customer.customerTransactions.size(); i++){
+		cout << "\t";
+		char transType = customer.customerTransactions[i].getTransactionType();
+		if (transType == 'B'){
+			cout << i << " - Borrowed " << customer.customerTransactions[i].movie;
+		}
+		else if(transType == 'R'){
+			cout << i << " - Returned " << customer.customerTransactions[i].movie;
+		}
+	}
+}
+
 int MovieStore::hashMovie(char movieCode, int releaseYear){
 	return (releaseYear % 10) + (int)movieCode - 1;
 }

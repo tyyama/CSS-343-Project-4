@@ -1,3 +1,8 @@
+ostream& operator<<( ostream &output, const Movie& m){
+	output << getTitle() << " (" << getYearReleased() << ") directed by " << getDirector();
+	return output;
+}
+
 Movie::Movie(int stock, string director, string title, int year) : stock(stock), director(director), title(title), yearRelease(year){}
 
 Movie *Movie::store_movie(char movieType, int stock, string director, string title, int year){
@@ -15,10 +20,14 @@ bool Movie::sameType(const Movie& other) const{
 	return (typeid(*this)==typeid(other));
 }
 
-bool Movie::operator==(const Movie & rhs) const{
+bool Movie::operator==(const Movie &rhs) const{
 	if(!sameType(rhs)){
 		return false;
 	}else{
 		return (yearRelease == rhs.yearRelease && stock == rhs.stock && title == rhs.title && director == rhs.director);
 	}
+}
+
+bool Movie::operator!=(const Movie &rhs) const{
+	return !(this == rhs);
 }

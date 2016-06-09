@@ -12,6 +12,7 @@ class Transaction{
     
     static Transaction *read_commands(string transType); //Factory Method
 		char getTransactionType();
+		Movie getMovie();
 	
 	private:
 		char transactionType;

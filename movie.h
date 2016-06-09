@@ -14,9 +14,10 @@
 using namespace std;
 
 class Movie{
+	friend ostream& operator<<( ostream &output, const Movie &m);
 	public:
-		bool operator==(const Movie &) const;
-		bool operator!=(const Movie &) const;	
+		bool operator==(const Movie &rhs) const;
+		bool operator!=(const Movie &rhs) const;	
 		
 		static Movie *store_movie(char, int, string, string, int);
 		
@@ -28,7 +29,7 @@ class Movie{
 		string getDirector();
     
 	private:
-	
+		
 	protected :
 		Movie(int stock, string director, string title, int year);
 	
